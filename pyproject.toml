@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "deepfake-mo444"
+version = "0.1.0"
+description = "Deepfake detection model for the ML and pattern recognition course"
+authors = ["kdunorat <kdu.norat@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+torch = ">=2.2.0,<2.3.0"
+seaborn = "^0.13.2"
+
+[tool.poetry.group.dev.dependencies]
+facenet-pytorch = "^2.6.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
