@@ -34,6 +34,10 @@ This project requires Python 3.10 and uses Poetry for dependency management. To 
 4. **Set Up the Interpreter**
 
    Make sure to set up your Python interpreter to use the one provided by Poetry. This is crucial to ensure that all the dependencies are correctly loaded during the development and execution of the project.
+   To find the interpreter run:
+      ```bash
+   poetry run which python
+   ```
 
 ## Usage
 
