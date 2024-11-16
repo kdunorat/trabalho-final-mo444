@@ -75,7 +75,7 @@ def train(device, train_loader, validation_loader, model, epochs=20):
 
     return model, (train_losses, val_losses, train_accuracies, val_accuracies)
 
-def plot_training_history(history):
+def plot_training_history(history, name_graph='training_history'):
     train_losses, val_losses, train_accuracies, val_accuracies = history
 
     # Plot training & validation accuracy values
@@ -96,8 +96,9 @@ def plot_training_history(history):
     plt.xlabel('Epoch')
     plt.ylabel('Loss')
     plt.legend()
-    
-    plt.show()
+
+    plt.savefig(f'{name_graph}.png')
+    #plt.show()
 
 def evaluate(device, model, validation_loader):
     model.load_state_dict(torch.load('best_model.pth'))

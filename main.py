@@ -17,12 +17,13 @@ def model_results(train_loader, validation_loader):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = model_build(device)
     print("Training model...")
-    model_trained, history = train(device, train_loader, validation_loader, model, epochs=3)
-    plot_training_history(history)
+    model_trained, history = train(device, train_loader, validation_loader, model, epochs=20)
+    print(history)
+    plot_training_history(history, name_graph='20_epocas')
     evaluate(device, model_trained, validation_loader)
 
 if __name__ == '__main__':
     input_folder = './Dataset'
-    output_folder = 'processed_faces'
+    output_folder = '/home/kdunorat/projetos/dados/processed_faces'
     train_loader, validation_loader =  generate_data(input_folder, output_folder)
     model_results(train_loader, validation_loader)
