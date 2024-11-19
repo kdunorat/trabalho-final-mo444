@@ -1,0 +1,7 @@
+torch>=2.2.0,<2.3.0
+matplotlib==3.9.2
+scikit-learn==1.5.2
+facenet-pytorch==2.6.0
+Pillow
+seaborn
+tqdm

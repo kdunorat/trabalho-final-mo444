@@ -4,7 +4,7 @@ This project aims to detect deepfake images using a convolutional neural network
 
 ## Prerequisites
 
-This project requires Python 3.10 and uses Poetry for dependency management. If you want to use poetry: 
+This project requires Python 3.10 and uses Poetry for dependency management.
 
 ## Installation
 
@@ -14,7 +14,7 @@ This project requires Python 3.10 and uses Poetry for dependency management. If 
    git clone <repository-url>
    cd trabalho-final-mo444
    ```
-
+### Using Poetry
 2. **Activate the Poetry Environment**
 
    Run the following command to enter the Poetry shell:
@@ -38,7 +38,10 @@ This project requires Python 3.10 and uses Poetry for dependency management. If 
       ```bash
    poetry run which python
    ```
-
+### Using pip
+   ```bash 
+   pip install -r requirements.txt
+   ```
 ## Usage
 
 After installing the dependencies, you can run the training script by executing:
