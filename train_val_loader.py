@@ -2,8 +2,6 @@ import os
 import torch
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
-from torch.utils.data import Subset
-import numpy as np
 
 
 def generate_train_val(output_folder: str):

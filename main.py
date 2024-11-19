@@ -1,9 +1,8 @@
 import torch
 from process_data import process_data
-from train_val_loader import generate_train_val
 from model import model_build
 from train_model import train, plot_training_history, evaluate
-from utils import load_model
+from utils import load_model, generate_train_val
 
 
 def generate_data(input_folder, output_folder, extract_faces=False):

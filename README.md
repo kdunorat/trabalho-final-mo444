@@ -53,7 +53,7 @@ Make sure that your dataset is properly organized and the paths are set up in th
 
 - **main.py**: Entry point for training the model.
 - **train_model.py**: Contains the training logic and model evaluation.
-- **face_extract.py and train_val_loader/**: Utility functions for data preprocessing, face extraction, etc.
+- **utils.py**: Utility functions for data preprocessing, face extraction, etc.
 - **README.md**: This document.
 
 ## Notes
