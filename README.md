@@ -39,12 +39,18 @@ This project requires Python 3.10 and uses Poetry for dependency management.
    poetry run which python
    ```
 ### Using pip
+
    ```bash 
    pip install -r requirements.txt
    ```
 ## Usage
 
-After installing the dependencies, you can run the training script by executing:
+After installing the dependencies, test if GPU is available with:
+
+```bash
+python check_torch.py
+```
+Change the main.py to go from training to loading and then run:
 
 ```bash
 python main.py
