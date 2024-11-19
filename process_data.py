@@ -1,8 +1,8 @@
 import os
 from PIL import Image
-from face_extract import extract_face
+from utils import extract_face
 
-def process_data(input_folder: str, output_folder: str):
+def process_data(device, input_folder: str, output_folder: str):
     os.makedirs(output_folder, exist_ok=True)
     print("Starting face extraction")
     for split in ['Train', 'Validation', 'Test']:
@@ -21,4 +21,3 @@ def process_data(input_folder: str, output_folder: str):
                 if face is not None:
                     output_path = os.path.join(output_label_folder, filename)
                     face.save(output_path, format='JPEG')
-
