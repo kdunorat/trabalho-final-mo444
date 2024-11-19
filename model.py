@@ -1,6 +1,7 @@
 from torchvision import models
 import torch.nn as nn
 
+
 def model_build(device, dense_neurons: int = 128):
     # Load the pretrained MobileNetV2 model
     model = models.mobilenet_v2(weights=models.MobileNet_V2_Weights.IMAGENET1K_V1)
@@ -19,5 +20,3 @@ def model_build(device, dense_neurons: int = 128):
 
     model = model.to(device)
     return model
-
-
