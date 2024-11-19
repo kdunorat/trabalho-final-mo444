@@ -32,6 +32,7 @@ def extract_face(device, filename, required_size=(256, 256)):
     
     return None
 
+
 def generate_train_val(output_folder: str):
     torch.cuda.empty_cache()
     # Data augmentation and normalization for training

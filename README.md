@@ -60,7 +60,3 @@ Make sure that your dataset is properly organized and the paths are set up in th
 
 - This project is intended to be run on a CUDA-compatible GPU to speed up training.
 - The model uses MTCNN for face extraction and MobileNetV2 for feature extraction.
-
-## License
-
-This project is licensed under the MIT License.
