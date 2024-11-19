@@ -52,6 +52,7 @@ Make sure that your dataset is properly organized and the paths are set up in th
 ## Project Structure
 
 - **main.py**: Entry point for training the model.
+- **model.py**:  Contains the function to build the default model
 - **train_model.py**: Contains the training logic and model evaluation.
 - **utils.py**: Utility functions for data preprocessing, face extraction, etc.
 - **README.md**: This document.
