@@ -1,7 +1,8 @@
 import torch
 from model import model_build
-from train_model import train, plot_training_history, evaluate
-from utils import load_model, process_data, generate_train_val
+from train_model import train, plot_training_history
+from utils import load_model, process_data, generate_train_val, evaluate, plot_roc_auc
+from sklearn.metrics import auc
 
 
 def generate_data(input_folder, output_folder, extract_faces=False):
@@ -41,6 +42,9 @@ if __name__ == '__main__':
     # evaluation(model_trained, validation_loader, name_graph='20_epocas-128n', history=history)
 
     # Loading a model 
-    model_loaded = load_model(model, 'best_model.pth')
-    evaluation(model_loaded, validation_loader, name_graph='20_epocas-128n')
+    model_loaded = load_model(model, '20epochs-128n-checkpoint.pth')
+    # Getting metrics
+    fpr, tpr = evaluate(device='cuda', model=model_loaded, validation_loader=validation_loader)
+    # Save auc
+    plot_roc_auc(fpr, tpr, auc(fpr, tpr), name_graph='roc-auc-20epochs')
    

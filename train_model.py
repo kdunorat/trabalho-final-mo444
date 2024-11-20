@@ -2,11 +2,11 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import matplotlib.pyplot as plt
-from sklearn.metrics import balanced_accuracy_score, recall_score, f1_score, precision_score
 from tqdm import tqdm
 
 
 def train(device, train_loader, validation_loader, model, epochs=20):
+
     # Define loss and optimizer
     criterion = nn.BCELoss()
     optimizer = optim.Adam(model.parameters(), lr=0.001)
@@ -77,7 +77,8 @@ def train(device, train_loader, validation_loader, model, epochs=20):
 
     return model, (train_losses, val_losses, train_accuracies, val_accuracies)
 
-def plot_training_history(history, name_graph='training_history'):
+def plot_training_history(history=None, name_graph='training_history'):
+
     train_losses, val_losses, train_accuracies, val_accuracies = history
 
     # Plot training & validation accuracy values
@@ -100,35 +101,5 @@ def plot_training_history(history, name_graph='training_history'):
     plt.legend()
 
     plt.savefig(f'{name_graph}.png')
-    #plt.show()
 
-def evaluate(device, model, validation_loader):
-    model.load_state_dict(torch.load('best_model.pth'))
-    model.eval()
 
-    all_labels = []
-    all_predictions = []
-    correct, total = 0, 0
-    with torch.no_grad():
-        for inputs, labels in validation_loader:
-            inputs, labels = inputs.to(device), labels.float().to(device)
-            outputs = model(inputs).squeeze()
-            if outputs.dim() == 0:
-                outputs = outputs.unsqueeze(0)
-            predicted = (outputs >= 0.5).float()
-            all_labels.extend(labels.cpu().numpy())
-            all_predictions.extend(predicted.cpu().numpy())
-            correct += (predicted == labels).sum().item()
-            total += labels.size(0)
-
-    val_accuracy = correct / total
-    balanced_acc = balanced_accuracy_score(all_labels, all_predictions)
-    recall = recall_score(all_labels, all_predictions)
-    f1 = f1_score(all_labels, all_predictions)
-    precision = precision_score(all_labels, all_predictions)
-
-    print(f"Validation Accuracy: {val_accuracy * 100:.2f}%")
-    print(f"Balanced Accuracy: {balanced_acc * 100:.2f}%")
-    print(f"Recall: {recall * 100:.2f}%")
-    print(f"F1 Score: {f1 * 100:.2f}%")
-    print(f"Precision: {precision * 100:.2f}%")
