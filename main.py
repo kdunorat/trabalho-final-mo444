@@ -17,10 +17,10 @@ def evaluation(model, validation_loader, name_graph=None, history=None):
 if __name__ == '__main__':
     # Mudar isso:
     nome_graph = '20_epocas-128n-noMTCNN'
-    output_folder = '/home/kdunorat/projetos/dados/processed_faces'
+    input_folder = '/home/kdunorat/projetos/dados/processed_faces'
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    train_loader, validation_loader =  generate_train_val(output_folder, batch=32)
+    train_loader, validation_loader =  generate_train_val(input_folder, batch=32)
 
     # Descongelando a ultima camada
     model_partial_defrost = model_build(device, dense_neurons=128, defrost=True, defrost_layers=1)
