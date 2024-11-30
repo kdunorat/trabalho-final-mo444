@@ -25,8 +25,8 @@ def evaluation(model, validation_loader, name_graph=None, history=None):
 
 if __name__ == '__main__':
     # input_folder = ''
-    # output_folder = '/home/kdunorat/projetos/dados/processed_faces'
-    output_folder = '/home/kdunorat/projetos/dados/Dataset' # Tentando sem o mtcnn
+    nome_graph = '20_epocas-128n-noMTCNN'
+    output_folder = '/home/kdunorat/projetos/dados/processed_faces'
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     train_loader, validation_loader =  generate_data(output_folder=output_folder)
 
@@ -35,12 +35,13 @@ if __name__ == '__main__':
 
     # Training a model
     model_trained, history = train(device, train_loader, validation_loader, model_partial_defrost, epochs=20)
-    evaluation(model_trained, validation_loader, name_graph='20_epocas-128n-noMTCNN', history=history)
+    evaluation(model_trained, validation_loader, name_graph=nome_graph, history=history)
 
     # Loading a model .pth
     # model_loaded = load_model(model, '20epochs-128n-checkpoint.pth')
+    
     # Getting metrics
     fpr, tpr = evaluate(device='cuda', model=model_trained, validation_loader=validation_loader)
     # Save auc
-    plot_roc_auc(fpr, tpr, auc(fpr, tpr), name_graph='roc-auc-20epochs-noMTCNN')
+    plot_roc_auc(fpr, tpr, auc(fpr, tpr), name_graph=f'{nome_graph}_roc-auc')
    
