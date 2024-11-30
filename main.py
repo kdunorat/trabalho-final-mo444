@@ -5,19 +5,13 @@ from utils import load_model, process_data, generate_train_val, evaluate, plot_r
 from sklearn.metrics import auc
 
 
-def generate_data(input_folder, output_folder, extract_faces=False):
+def generate_data(output_folder, extract_faces=False, input_folder=None):
     if extract_faces:
         process_data(input_folder, output_folder)
     print("Loading data...")
     train_loader, validation_loader = generate_train_val(output_folder)
 
     return train_loader, validation_loader
-
-
-def model_results(train_loader, validation_loader):
-    print("Training model...")
-    model_trained, history = train(device, train_loader, validation_loader, model, epochs=20)
-    return model_trained, history
 
 
 def evaluation(model, validation_loader, name_graph=None, history=None):
@@ -30,21 +24,23 @@ def evaluation(model, validation_loader, name_graph=None, history=None):
 
 
 if __name__ == '__main__':
-    input_folder = './Dataset'
-    output_folder = '/home/kdunorat/projetos/dados/processed_faces'
+    # input_folder = ''
+    # output_folder = '/home/kdunorat/projetos/dados/processed_faces'
+    output_folder = '/home/kdunorat/projetos/dados/Dataset' # Tentando sem o mtcnn
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    train_loader, validation_loader =  generate_data(input_folder, output_folder)
-    # Using 128 neurons
-    model = model_build(device)
+    train_loader, validation_loader =  generate_data(output_folder=output_folder)
+
+    # Descongelando a ultima camada
+    model_partial_defrost = model_build(device, dense_neurons=128, defrost=True, defrost_layers=1)
 
     # Training a model
-    # model_trained, history = model_results(train_loader, validation_loader)
-    # evaluation(model_trained, validation_loader, name_graph='20_epocas-128n', history=history)
+    model_trained, history = train(device, train_loader, validation_loader, model_partial_defrost, epochs=20)
+    evaluation(model_trained, validation_loader, name_graph='20_epocas-128n-noMTCNN', history=history)
 
-    # Loading a model 
-    model_loaded = load_model(model, '20epochs-128n-checkpoint.pth')
+    # Loading a model .pth
+    # model_loaded = load_model(model, '20epochs-128n-checkpoint.pth')
     # Getting metrics
-    fpr, tpr = evaluate(device='cuda', model=model_loaded, validation_loader=validation_loader)
+    fpr, tpr = evaluate(device='cuda', model=model_trained, validation_loader=validation_loader)
     # Save auc
-    plot_roc_auc(fpr, tpr, auc(fpr, tpr), name_graph='roc-auc-20epochs')
+    plot_roc_auc(fpr, tpr, auc(fpr, tpr), name_graph='roc-auc-20epochs-noMTCNN')
    

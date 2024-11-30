@@ -58,7 +58,7 @@ def extract_face(device, filename, required_size=(256, 256)):
     return None
 
 
-def generate_train_val(output_folder: str):
+def generate_train_val(output_folder: str, batch: int):
     torch.cuda.empty_cache()
     # Data augmentation and normalization for training
     data_transforms = {
@@ -82,8 +82,8 @@ def generate_train_val(output_folder: str):
     validation_dataset = datasets.ImageFolder(os.path.join(output_folder, 'Validation'), data_transforms['Validation'])
     
     # Data loaders
-    train_loader = DataLoader(train_dataset, batch_size=24, shuffle=True, num_workers=4, pin_memory=True)
-    validation_loader = DataLoader(validation_dataset, batch_size=24, shuffle=False, num_workers=4, pin_memory=True)
+    train_loader = DataLoader(train_dataset, batch_size=batch, shuffle=True, num_workers=4, pin_memory=True)
+    validation_loader = DataLoader(validation_dataset, batch_size=batch, shuffle=False, num_workers=4, pin_memory=True)
 
 
     return train_loader, validation_loader
