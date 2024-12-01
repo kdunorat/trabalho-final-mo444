@@ -4,9 +4,11 @@ from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
 import matplotlib.pyplot as plt
 from sklearn.metrics import balanced_accuracy_score, recall_score, f1_score, precision_score, roc_curve
+from tqdm import tqdm
 
 
 def load_model(model, pth:str):
+    print("Loading model...")
     model.load_state_dict(torch.load(pth))
     model.eval()
     return model
@@ -28,19 +30,26 @@ def generate_train_val(output_folder: str, batch: int):
             transforms.Resize((256, 256)),
             transforms.ToTensor(),
             transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+        ]),
+        'Test': transforms.Compose([
+            transforms.Resize((256, 256)),
+            transforms.ToTensor(),
+            transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
         ])
     }
 
     # Load datasets
     train_dataset = datasets.ImageFolder(os.path.join(output_folder, 'Train'), data_transforms['Train'])
     validation_dataset = datasets.ImageFolder(os.path.join(output_folder, 'Validation'), data_transforms['Validation'])
-    
+    test_dataset = datasets.ImageFolder(os.path.join(output_folder, 'Test'), data_transforms['Test'])
+
     # Data loaders
     train_loader = DataLoader(train_dataset, batch_size=batch, shuffle=True, num_workers=4, pin_memory=True)
     validation_loader = DataLoader(validation_dataset, batch_size=batch, shuffle=False, num_workers=4, pin_memory=True)
+    test_loader = DataLoader(test_dataset, batch_size=batch, shuffle=False, num_workers=4, pin_memory=True)
 
 
-    return train_loader, validation_loader
+    return train_loader, validation_loader, test_loader
 
 
 def evaluate(device, model, validation_loader):

@@ -6,15 +6,9 @@ from tqdm import tqdm
 
 
 def train(device, train_loader, validation_loader, model, epochs=20):
-
     # Define loss and optimizer
     criterion = nn.BCELoss()
-    optimizer = optim.Adam(model.parameters(), lr=0.001)
-
-    # Set up early stopping
-    best_val_loss = float('inf')
-    patience = 5
-    trigger_times = 0
+    optimizer = optim.Adam(model.parameters(), lr=0.1)
 
     train_losses, val_losses, train_accuracies, val_accuracies = [], [], [], []
 
@@ -27,9 +21,12 @@ def train(device, train_loader, validation_loader, model, epochs=20):
             inputs, labels = inputs.to(device), labels.float().to(device)
             optimizer.zero_grad()
 
+            # Model outputs
             outputs = model(inputs).squeeze()
-            if outputs.dim() == 0:
+            # Ensure outputs and labels have the same shape
+            if len(labels.shape) == 1 and len(outputs.shape) == 0:
                 outputs = outputs.unsqueeze(0)
+
             loss = criterion(outputs, labels)
             loss.backward()
             optimizer.step()
@@ -51,6 +48,10 @@ def train(device, train_loader, validation_loader, model, epochs=20):
             for inputs, labels in validation_loader:
                 inputs, labels = inputs.to(device), labels.float().to(device)
                 outputs = model(inputs).squeeze()
+                # Ensure outputs and labels have the same shape
+                if len(labels.shape) == 1 and len(outputs.shape) == 0:
+                    outputs = outputs.unsqueeze(0)
+
                 loss = criterion(outputs, labels)
                 running_val_loss += loss.item() * inputs.size(0)
                 predicted = (outputs >= 0.5).float()
@@ -63,17 +64,6 @@ def train(device, train_loader, validation_loader, model, epochs=20):
         val_accuracies.append(val_accuracy)
 
         print(f"Epoch [{epoch+1}/{epochs}], Train Loss: {train_loss:.4f}, Train Acc: {train_accuracy:.4f}, Val Loss: {val_loss:.4f}, Val Acc: {val_accuracy:.4f}")
-
-        # Early stopping logic
-        if val_loss < best_val_loss:
-            best_val_loss = val_loss
-            trigger_times = 0
-            torch.save(model.state_dict(), 'best_model.pth')
-        else:
-            trigger_times += 1
-            if trigger_times >= patience:
-                print("Early stopping triggered.")
-                break
 
     return model, (train_losses, val_losses, train_accuracies, val_accuracies)
 
